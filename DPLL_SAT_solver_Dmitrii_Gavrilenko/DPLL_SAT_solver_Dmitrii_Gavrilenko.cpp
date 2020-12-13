@@ -19,13 +19,13 @@ class Formula {
 public:
 
 	vector<int> literals; //-1 - unassigned 1 - true 0 - false
-	//vector<int> literal_polarity; //if + 2n else if - 2n-1
+	vector<int> literal_polarity; //if + 2n else if - 2n-1
 	vector<vector<int>> clauses;
 	Formula() {}
 	Formula(const Formula &f) {
 		literals = f.literals;
 		clauses = f.clauses;
-		//literal_polarity = f.literal_polarity;
+		literal_polarity = f.literal_polarity;
 	}
 };
 
@@ -37,6 +37,7 @@ private:
 	int unit_propagate(Formula &); 
 	int DPLL(Formula);            
 	int apply_transform(Formula &,int);
+	void clear_literal(Formula &);
 	void show_result(Formula &, int); 
 public:
 	SATSolverDPLL() {}
@@ -62,8 +63,8 @@ void SATSolverDPLL::initialize() {
 	formula.literals.resize(literal_count + 1, -1);
 	formula.clauses.clear();
 	formula.clauses.resize(clause_count);
-	//formula.literal_polarity.clear();
-//	formula.literal_polarity.resize(2 * literal_count + 1, 0);
+	formula.literal_polarity.clear();
+	formula.literal_polarity.resize(2 * literal_count + 1, 0);
 
 	int literal;
 	for (int i = 0; i < clause_count; i++) {
@@ -71,7 +72,21 @@ void SATSolverDPLL::initialize() {
 			cin >> literal;
 			if (literal != 0) 
 				formula.clauses[i].push_back(literal);
-			else break; //next clause
+			if (literal > 0)
+				formula.literal_polarity[2*abs(literal)]++;
+			else if (literal < 0 )
+				formula.literal_polarity[2 * abs(literal)-1]++;
+			if (literal==0)
+				break; //next clause
+		}
+	}
+}
+
+void SATSolverDPLL::clear_literal(Formula &f) {
+	for (int i = 1; i < f.literal_polarity.size(); i++) {
+		if (f.literal_polarity[i] == 0) {
+			f.literals[(i + 1) / 2] = i % 2 ? 1 : 0;
+			apply_transform(f, (i + 1) / 2);
 		}
 	}
 }
@@ -198,6 +213,7 @@ void SATSolverDPLL::show_result(Formula &f, int result) {
 }
 
 void SATSolverDPLL::solve() {
+	clear_literal(formula);
 	int result = DPLL(formula); 
 	if (result == Cat::normal) {
 		show_result(formula, Cat::unsatisfied); 
