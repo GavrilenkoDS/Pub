@@ -112,7 +112,7 @@ int SATSolverDPLL::unit_propagate(Formula &f) {
 				if (result == Cat::satisfied || result == Cat::unsatisfied) {
 					return result;
 				}
-				break; // exit the loop to check for another unit clause from the start
+				break; // exit the loop 
 			}
 			else if (f.clauses[i].size() == 0) 
 			{
@@ -157,19 +157,19 @@ int SATSolverDPLL::apply_transform(Formula &f, int literal_to_apply) {
 
 
 int SATSolverDPLL::DPLL(Formula f) {
-	int result = unit_propagate(f); // perform unit propagation on the formula
-	if (result == Cat::satisfied) // if formula satisfied, show result and return
+	int result = unit_propagate(f); 
+	if (result == Cat::satisfied) 
 	{
 		show_result(f, result);
 		return Cat::completed;
 	}
-	else if (result == Cat::unsatisfied) // if formula not satisfied in this					
+	else if (result == Cat::unsatisfied) 				
 	{
 		return Cat::normal;
 	}
 	
 	for (int j = 0; j < 2; j++) {
-		Formula new_f = f; // copy the formula before recursing
+		Formula new_f = f; // copy 
 		
 		int literal_to_change = 1;
 		for (int k = 1; k < f.literals.size(); k++)
@@ -206,7 +206,7 @@ void SATSolverDPLL::show_result(Formula &f, int result) {
 		}
 		cout << "0";
 	}
-	else // if the formula is unsatisfiable
+	else 
 	{
 		cout << "UNSAT";
 	}
