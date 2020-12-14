@@ -1,3 +1,2 @@
 # Pub
-SAT DPLL solverfor c++
-g++ (or any other C++ compiler) with C++11 support
+SAT DPLL solver for g++ (or any other C++ compiler) with C++11 support
