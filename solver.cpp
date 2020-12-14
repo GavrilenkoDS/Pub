@@ -50,7 +50,7 @@ void SATSolverDPLL::initialize() {
 	//skip part
 	char c;
 	string s;
-	cin >> c;
+	cin >> c; 
 	cin >> c;
 	cin >> s;
 
