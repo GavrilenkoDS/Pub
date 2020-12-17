@@ -119,14 +119,12 @@ int SATSolverDPLL::unit_propagate(Formula &f) {
 				return Cat::unsatisfied; 
 			}
 		}
-	} while (unit_clause_found = false);
+	} while (unit_clause_found);
 
 	return Cat::normal; 
 }
 
-int SATSolverDPLL::apply_transform(Formula &f, int literal_to_apply) {
-	int value_to_apply = f.literals[literal_to_apply]; 
-													 
+int SATSolverDPLL::apply_transform(Formula &f, int literal_to_apply) {											 
 	for (int i = 0; i < f.clauses.size(); i++) {
 		for (int j = 0; j < f.clauses[i].size(); j++) {
 			
@@ -204,11 +202,11 @@ void SATSolverDPLL::show_result(Formula &f, int result) {
 			cout << i*(f.literals[i]>0?1:(-1));
 			cout << " ";
 		}
-		cout << "0";
+		cout << "0\n";
 	}
 	else 
 	{
-		cout << "UNSAT";
+		cout << "UNSAT\n";
 	}
 }
 
